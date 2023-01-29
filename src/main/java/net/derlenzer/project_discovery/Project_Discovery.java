@@ -1,6 +1,7 @@
 package net.derlenzer.project_discovery;
 
 import com.mojang.logging.LogUtils;
+import net.derlenzer.project_discovery.item.ModItems;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CreativeModeTabEvent;
@@ -20,13 +21,14 @@ public class Project_Discovery {
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
     public Project_Discovery() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
+        ModItems.register(eventBus);
+
+
+        eventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
-
-        modEventBus.addListener(this::addCreative);
+        eventBus.addListener(this::addCreative);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
